@@ -1,4 +1,5 @@
-import asyncio
+
+    import asyncio
 from aiogram import Bot, Dispatcher, F
 from aiogram.types import Message, ReplyKeyboardMarkup, KeyboardButton
 
@@ -12,51 +13,95 @@ CARD_NUMBER = "5614 6822 1054 1860"
 LOCATION_LINK = "https://maps.google.com/?q=Megaplanet+Tashkent"
 
 
-products = {
-     "Booppin bunny": 285000,
-    "Spooky and Pumpkin": 350000,
-    "Fragrama and Chocrama": 320000,
-    "Cerberus": 270000,
-    "Cash or Card": 300000,
-    "La Caso Boo": 540000,
-    "Foxini Lanterini": 500000,
-    "Reinito Sleighito": 270000,
-    "Frago La La La": 360000,
-    "Gym Broos": 1000000,
-    "Camera Ramena": 60000,
-    "Rosey and Teddy": 600000,
-    "Los chilinis": 1300000,
-    "Fortunu and Cashuru": 250000,
-    "Dragon Caneloni": 1000000,
-    "Hydra Dragon": 1450000,
-    "Dragon Gingerini": 2000000,
-    "Rico Dinero": 1700000,
-    "Acrodragon": 6000000,
-    "Pancake and Syrup": 4000000,
-    "Cookie and Milki": 270000,
-    "Los Amigos": 270000,
-    "Los Sekolah": 300000,
-    "Ketupat Bros": 870000,
-    "Elefanto Frigo": 1800000,
-    "Cloverat Calapat": 200000,
-    "Signore Carapace": 4000000,
-    "Skibidi Toilet": 40000000,
-    "Griffin": 50000000,
-    "Headless Horsemen": 150000000,
-    "Hydra Bunny": 1800000,
-    "Bunny and Eggy": 1400000,
-    "Meowl": 70000000,
-    "Strawberry Elephant": 100000000
+# =========================
+# 📦 ДАННЫЕ
+# =========================
+
+robux_products = {
+    "40 Robux": 15000,
+    "80 Robux": 25000,
+    "120 Robux": 40000,
+    "200 Robux": 50000,
+    "400 Robux": 110000,
+    "800 Robux": 180000,
+    "1000 Robux": 250000,
+    "24000 Robux": 4500000
 }
 
+const brainrot_products = {
+  "Booppin bunny": { price: 285000, available: true },
+  "Spooky and Pumpkin": { price: 350000, available: true },
+  "Fragrama and Chocrama": { price: 320000, available: true },
+  "Cerberus": { price: 270000, available: true },
+  "Cash or Card": { price: 300000, available: true },
+  "La Caso Boo": { price: 540000, available: true },
+  "Foxini Lanterini": { price: 500000, available: true },
+  "Reinito Sleighito": { price: 270000, available: true },
+  "Frago La La La": { price: 360000, available: true },
+  "Gym Broos": { price: 1000000, available: true },
+  "Camera Ramena": { price: 60000, available: true },
+  "Rosey and Teddy": { price: 600000, available: true },
+
+  "Los chilinis": { price: 1300000, available: false },
+  "Fortunu and Cashuru": { price: 250000, available: true },
+
+  "Dragon Caneloni": { price: 1000000, available: true },
+  "Hydra Dragon": { price: 1450000, available: true },
+
+  "Dragon Gingerini": { price: 2000000, available: false },
+  "Rico Dinero": { price: 1700000, available: false },
+
+  "Acrodragon": { price: 6000000, available: false },
+
+  "Pancake and Syrup": { price: 4000000, available: false },
+
+  "Cookie and Milki": { price: 270000, available: true },
+  "Los Amigos": { price: 270000, available: true },
+  "Los Sekolah": { price: 300000, available: true },
+  "Ketupat Bros": { price: 870000, available: true },
+
+  "Elefanto Frigo": { price: 1800000, available: false },
+
+  "Cloverat Calapat": { price: 200000, available: true },
+
+  "Signore Carapace": { price: 4000000, available: false },
+
+  "Skibidi Toilet": { price: 40000000, available: true },
+  "Griffin": { price: 50000000, available: true },
+
+  "Headless Horsemen": { price: 150000000, available: false },
+
+  "Hydra Bunny": { price: 1800000, available: true },
+  "Bunny and Eggy": { price: 1400000, available: true },
+
+  "Meowl": { price: 70000000, available: true },
+
+  "Strawberry Elephant": { price: 100000000, available: false }
+};
+
 user_cart = {}
+user_category = {}
 
 
-def product_kb():
+# =========================
+# 📌 КЛАВИАТУРЫ
+# =========================
+
+def category_kb():
+    return ReplyKeyboardMarkup(
+        keyboard=[
+            [KeyboardButton(text="🎮 Robux")],
+            [KeyboardButton(text="🧠 Brainrots")]
+        ],
+        resize_keyboard=True
+    )
+
+
+def robux_kb():
     kb = []
     row = []
 
-    for name in products.keys():
+    for name in robux_products.keys():
         row.append(KeyboardButton(text=name))
         if len(row) == 2:
             kb.append(row)
@@ -65,7 +110,21 @@ def product_kb():
     if row:
         kb.append(row)
 
-    kb.append([KeyboardButton(text="🛒 Купить")])
+    return ReplyKeyboardMarkup(keyboard=kb, resize_keyboard=True)
+
+
+def brainrots_kb():
+    kb = []
+    row = []
+
+    for name in brainrot_products.keys():
+        row.append(KeyboardButton(text=name))
+        if len(row) == 2:
+            kb.append(row)
+            row = []
+
+    if row:
+        kb.append(row)
 
     return ReplyKeyboardMarkup(keyboard=kb, resize_keyboard=True)
 
@@ -79,35 +138,79 @@ pay_kb = ReplyKeyboardMarkup(
 )
 
 
+# =========================
+# 🚀 START
+# =========================
+
 @dp.message(F.text == "/start")
 async def start(message: Message):
     await message.answer(
-        "🔥 Добро пожаловать в DarkStoreX!\nВыберите товар:",
-        reply_markup=product_kb()
+        "🔥 Выберите категорию:",
+        reply_markup=category_kb()
     )
 
 
-@dp.message(lambda m: m.text in products)
+# =========================
+# 📂 КАТЕГОРИИ
+# =========================
+
+@dp.message(lambda m: m.text in ["🎮 Robux", "🧠 Brainrots"])
+async def choose_category(message: Message):
+
+    user_category[message.from_user.id] = message.text
+
+    if message.text == "🎮 Robux":
+        await message.answer("Выберите Robux:", reply_markup=robux_kb())
+
+    if message.text == "🧠 Brainrots":
+        await message.answer("Выберите товар:", reply_markup=brainrots_kb())
+
+
+# =========================
+# 📦 ВЫБОР ТОВАРА
+# =========================
+
+@dp.message(lambda m: m.text in robux_products or m.text in brainrot_products)
 async def select_product(message: Message):
 
-    user_cart[message.from_user.id] = message.text
+    product = message.text
 
-    price = products[message.text]
+    # ROBUX
+    if product in robux_products:
+        price = robux_products[product]
+        available = True
+
+    # BRAINROTS
+    else:
+        item = brainrot_products[product]
+        price = item["price"]
+        available = item["available"]
+
+    # ❌ SOLD OUT
+    if not available:
+        await message.answer(
+            "❌ SOLD OUT!\nВыберите другой товар 👇",
+            reply_markup=brainrots_kb()
+        )
+        return
+
+    user_cart[message.from_user.id] = product
 
     await message.answer(
-        f"🛒 Вы выбрали: {message.text}\n💰 Цена: {price} UZS\n\nВыберите оплату:",
+        f"🛒 Товар: {product}\n💰 Цена: {price} UZS\n\nВыберите оплату:",
         reply_markup=pay_kb
     )
 
+
+# =========================
+# 💵 НАЛИЧКА
+# =========================
 
 @dp.message(F.text == "💵 Наличные")
 async def cash(message: Message):
 
     user = message.from_user
     product = user_cart.get(user.id, "Неизвестно")
-    price = products.get(product, 0)
-
-    username = f"@{user.username}" if user.username else user.first_name
 
     await message.answer(
         f"📍 Придите сюда:\n{LOCATION_LINK}\n\n📦 Заказ принят"
@@ -117,22 +220,20 @@ async def cash(message: Message):
         ADMIN_ID,
         f"🆕 ЗАКАЗ (НАЛИЧКА)\n"
         f"Товар: {product}\n"
-        f"Цена: {price} UZS\n"
-        f"Пользователь: {username}\n"
+        f"User: @{user.username if user.username else user.first_name}\n"
         f"ID: {user.id}"
     )
 
-    await message.answer("✅ Заказ отправлен владельцу")
 
+# =========================
+# 💳 КАРТА
+# =========================
 
 @dp.message(F.text == "💳 Карта")
 async def card(message: Message):
 
     user = message.from_user
     product = user_cart.get(user.id, "Неизвестно")
-    price = products.get(product, 0)
-
-    username = f"@{user.username}" if user.username else user.first_name
 
     await message.answer(
         f"💳 Переведите:\n{CARD_NUMBER}\n\n📸 Отправьте чек"
@@ -140,32 +241,33 @@ async def card(message: Message):
 
     await bot.send_message(
         ADMIN_ID,
-        f"💳 ЗАКАЗ (КАРТА)\n"
-        f"Товар: {product}\n"
-        f"Цена: {price} UZS\n"
-        f"Пользователь: {username}\n"
-        f"ID: {user.id}\n"
-        f"⚠️ Ожидается чек"
+        f"💳 ЗАКАЗ\nТовар: {product}\nID: {user.id}\nОжидается чек"
     )
 
+
+# =========================
+# 📸 ЧЕК
+# =========================
 
 @dp.message(F.photo)
 async def check(message: Message):
 
     user = message.from_user
-    username = f"@{user.username}" if user.username else user.first_name
 
     await bot.send_message(
         ADMIN_ID,
-        f"📸 ЧЕК\n"
-        f"Пользователь: {username}\n"
-        f"ID: {user.id}"
+        f"📸 ЧЕК\nUser: @{user.username if user.username else user.first_name}\nID: {user.id}"
     )
 
-    await message.answer("✅ Чек получен! Скоро свяжемся.")
+    await message.answer("✅ Чек получен!")
+
+
+# =========================
+# ▶️ RUN
+# =========================
 
 async def main():
-    print("DarkStoreX PRO запущен...")
+    print("Bot started...")
     await dp.start_polling(bot)
 
 if __name__ == "__main__":
