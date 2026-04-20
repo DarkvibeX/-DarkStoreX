@@ -25,28 +25,28 @@ products = {
     "Gym Broos": 1000000,
     "Camera Ramena": 60000,
     "Rosey and Teddy": 600000,
-    #"Los chilinis": 1300000,
+    "Los chilinis": 1300000,
     "Fortunu and Cashuru": 250000,
     "Dragon Caneloni": 1000000,
     "Hydra Dragon": 1450000,
-    #"Dragon Gingerini": 2000000,
-    #"Rico Dinero": 1700000,
-    #"Acrodragon": 6000000,
-    #"Pancake and Syrup": 4000000,
+    "Dragon Gingerini": 2000000,
+    "Rico Dinero": 1700000,
+    "Acrodragon": 6000000,
+    "Pancake and Syrup": 4000000,
     "Cookie and Milki": 270000,
     "Los Amigos": 270000,
     "Los Sekolah": 300000,
     "Ketupat Bros": 870000,
-    #"Elefanto Frigo": 1800000,
+    "Elefanto Frigo": 1800000,
     "Cloverat Calapat": 200000,
-    #"Signore Carapace": 4000000,
+    "Signore Carapace": 4000000,
     "Skibidi Toilet": 40000000,
     "Griffin": 50000000,
-    #"Headless Horsemen": 150000000,
+    "Headless Horsemen": 150000000,
     "Hydra Bunny": 1800000,
     "Bunny and Eggy": 1400000,
     "Meowl": 70000000,
-    #"Strawberry Elephant": 100000000
+    "Strawberry Elephant": 100000000
 }
 
 user_cart = {}
@@ -163,7 +163,6 @@ async def check(message: Message):
     )
 
     await message.answer("✅ Чек получен! Скоро свяжемся.")
-
 
 async def main():
     print("DarkStoreX PRO запущен...")
